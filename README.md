@@ -1,49 +1,65 @@
-# AI-Powered Podcast & WordPress Content Automation
+# 🚀 AI-Powered Podcast & WordPress Content Automation
 
-An end-to-end automation system built with **n8n**, **FastAPI**, **OpenAI Whisper**, and **OpenAI GPT** to streamline podcast transcription and WordPress content repurposing. The workflow automatically generates marketing assets and stores them in Google Sheets and Google Drive for human review before publication.
-
----
-
-## Features
-
-### Podcast Automation
-
-* Detects new podcast videos uploaded to Google Drive
-* Extracts audio from video files
-* Transcribes audio using OpenAI Whisper via a FastAPI backend
-* Generates Episode Title, Show Notes, Blog Draft, social captions, Newsletter Copy, Quote Ideas, and Short-form Clip Timestamps
-* Renames processed files with a `done_` prefix to prevent duplicate processing
-
-### WordPress Blog Automation
-
-* Detects newly published WordPress blog posts
-* Pulls the blog title and content using the WordPress REST API
-* Generates Facebook Caption, Instagram Caption, TikTok Talking-Head Prompt, Email Newsletter Blurb, Three Short Video Hooks, Three Quote Graphic Ideas, and One Soft Call-to-Action
-* Saves generated content to Google Sheets and Google Drive
-* Sends content via email for human review before publication
+An **end-to-end AI automation system** built with **n8n**, **FastAPI**, **OpenAI Whisper**, and **OpenAI GPT** to automate podcast transcription and WordPress content repurposing. This project streamlines content creation by generating platform-specific marketing assets and storing them in Google Sheets and Google Drive for **human review before publication**.
 
 ---
 
-## Tech Stack
+## ✨ Key Features
 
-* Python 3.14+
-* FastAPI
-* Uvicorn
-* Faster-Whisper
-* OpenAI API
-* n8n
-* Docker
-* FFmpeg
-* Google Drive API
-* Google Sheets API
-* WordPress REST API
-* uv (Python package manager)
+### 🎙️ Podcast Automation
+
+* 📂 Detects new podcast videos uploaded to **Google Drive**
+* 🎧 Extracts audio from video files
+* 📝 Transcribes audio using **OpenAI Whisper** via a FastAPI backend
+* 🤖 Generates AI-powered marketing assets:
+
+  * Episode Title
+  * Show Notes
+  * Blog Draft
+  * Facebook Caption
+  * Instagram Caption
+  * TikTok Script
+  * Quote Ideas
+  * Newsletter Copy
+  * Suggested Short-form Clip Timestamps
+* 🔒 Prevents duplicate processing by renaming completed files with a `done_` prefix
+
+### 🌐 WordPress Blog Automation
+
+* 📡 Detects newly published **WordPress blog posts**
+* 📖 Pulls the blog title and content via the **WordPress REST API**
+* 🎨 Generates brand-aligned content for:
+
+  * Facebook Caption
+  * Instagram Caption
+  * TikTok Talking-Head Prompt
+  * Email Newsletter Blurb
+  * Three Short Video Hooks
+  * Three Quote Graphic Ideas
+  * One Soft Call-to-Action
+* 📊 Saves generated content to **Google Sheets**
+* ☁️ Stores outputs in **Google Drive**
+* 📧 Sends content via email for **human review before public use**
 
 ---
 
-## Project Structure
+## 🛠️ Tech Stack
 
-```
+| Category             | Technology                                              |
+| -------------------- | ------------------------------------------------------- |
+| **Backend**          | Python 3.14+, FastAPI, Uvicorn                          |
+| **AI**               | OpenAI GPT, OpenAI Whisper, Faster-Whisper              |
+| **Automation**       | n8n                                                     |
+| **Package Manager**  | uv                                                      |
+| **Containerization** | Docker                                                  |
+| **Media Processing** | FFmpeg                                                  |
+| **Integrations**     | Google Drive API, Google Sheets API, WordPress REST API |
+
+---
+
+## 📁 Project Structure
+
+```bash
 AI-Powered-Podcast-WordPress-Content-Automation/
 ├── .venv/
 ├── n8n-workflows/
@@ -59,49 +75,35 @@ AI-Powered-Podcast-WordPress-Content-Automation/
 
 ---
 
-## Installation Using uv
+## ⚡ Installation Using uv
 
-### Prerequisites
+### 📋 Prerequisites
 
-Make sure you have the following installed:
+Ensure the following tools are installed on your system:
 
-* Python 3.14 or higher
-* uv package manager
-* FFmpeg
-* Docker (for running n8n locally)
+* 🐍 **Python 3.14+**
+* 📦 **uv package manager**
+* 🎞️ **FFmpeg**
+* 🐳 **Docker** (for running n8n locally)
 
-### Clone the Repository
+### 📥 Clone the Repository
 
 ```bash
 git clone https://github.com/your-username/AI-Powered-Podcast-WordPress-Content-Automation.git
 cd AI-Powered-Podcast-WordPress-Content-Automation
 ```
 
-### Install Dependencies
+### 📦 Install Dependencies
 
-Since this project uses **uv**, install all dependencies with:
+This project uses **uv** for dependency management. Install all dependencies with:
 
 ```bash
 uv sync
 ```
 
-This will create the virtual environment and install all dependencies defined in `pyproject.toml`.
+This command will automatically create the virtual environment and install all dependencies defined in `pyproject.toml`.
 
-### Activate the Virtual Environment
-
-**Windows (PowerShell):**
-
-```powershell
-.venv\Scripts\Activate.ps1
-```
-
-**Linux/macOS:**
-
-```bash
-source .venv/bin/activate
-```
-
-### Run the FastAPI Whisper Server
+### ▶️ Run the FastAPI Whisper Server
 
 From the project root directory, run:
 
@@ -109,7 +111,7 @@ From the project root directory, run:
 uv run --directory whisper-server uvicorn main:app --reload
 ```
 
-The server will start at:
+The server will be available at:
 
 ```
 http://127.0.0.1:8000
@@ -117,26 +119,9 @@ http://127.0.0.1:8000
 
 ---
 
-## Dependencies
+## 🔧 Environment Variables
 
-The project dependencies are managed through `pyproject.toml`:
-
-```toml
-[project]
-requires-python = ">=3.14"
-dependencies = [
-    "fastapi>=0.139.0",
-    "faster-whisper>=1.2.1",
-    "python-multipart>=0.0.32",
-    "uvicorn>=0.51.0",
-]
-```
-
----
-
-## Environment Variables
-
-Create a `.env` file in the project root:
+Create a `.env` file in the project root and add the following variables:
 
 ```env
 OPENAI_API_KEY=your_openai_api_key
@@ -146,19 +131,19 @@ GOOGLE_SHEETS_CREDENTIALS=path_to_credentials.json
 
 ---
 
-## Google Cloud Setup
+## ☁️ Google Cloud Setup
 
-To use Google Drive and Google Sheets integrations, ensure that:
+To enable **Google Drive** and **Google Sheets** integrations:
 
-1. A Google Cloud project is created.
-2. Google Drive API is enabled.
-3. Google Sheets API is enabled.
-4. OAuth2 or Service Account credentials are generated.
-5. The credentials are configured in n8n.
+1. Create a **Google Cloud Project**
+2. Enable the **Google Drive API**
+3. Enable the **Google Sheets API**
+4. Generate **OAuth2** or **Service Account credentials**
+5. Configure the credentials in **n8n**
 
 ---
 
-## Running n8n with Docker
+## 🐳 Running n8n with Docker
 
 Start n8n locally using Docker:
 
@@ -170,78 +155,76 @@ docker run -it --rm \
   docker.n8n.io/n8nio/n8n
 ```
 
-Then open:
+Open n8n in your browser:
 
 ```
 http://localhost:5678
 ```
 
-Import the workflow files from the `n8n-workflows/` folder.
+Import the workflow files from the `n8n-workflows/` directory.
 
 ---
 
-## Workflow Overview
+## 🔄 Workflow Overview
 
-### Podcast Workflow
+### 🎙️ Podcast Workflow
 
-```
-Google Drive Video
-        ↓
-Extract Audio
-        ↓
-Whisper Transcription
-        ↓
-OpenAI Content Generation
-        ↓
-Google Sheets / Google Drive
-        ↓
-Email Review
+```mermaid
+graph TD
+    A[Google Drive Video] --> B[Extract Audio]
+    B --> C[Whisper Transcription]
+    C --> D[OpenAI Content Generation]
+    D --> E[Google Sheets / Google Drive]
+    E --> F[Email Review]
 ```
 
-### WordPress Workflow
+### 🌐 WordPress Workflow
 
-```
-New WordPress Blog Post
-        ↓
-Fetch Title & Content
-        ↓
-OpenAI Brand Voice Content Generation
-        ↓
-Google Sheets / Google Drive
-        ↓
-Email Review
+```mermaid
+graph TD
+    A[New WordPress Blog Post] --> B[Fetch Title & Content]
+    B --> C[OpenAI Brand Voice Content Generation]
+    C --> D[Google Sheets / Google Drive]
+    D --> E[Email Review]
 ```
 
 ---
 
-## Duplicate Protection
+## 🔒 Duplicate Protection
 
-After a podcast video is successfully processed, the original file is renamed by adding the `done_` prefix.
+The podcast workflow includes **built-in duplicate protection**. After a video is successfully processed, the original file is automatically renamed by adding the `done_` prefix.
 
-Example:
+**Example:**
 
+```bash
+SLE SNF POD.mp4  →  done_SLE SNF POD.mp4
 ```
-SLE SNF POD.mp4 → done_SLE SNF POD.mp4
-```
 
-On future scheduled runs, any file starting with `done_` is skipped, preventing duplicate transcription and content generation.
+During future scheduled runs, any file starting with `done_` is skipped, ensuring the same podcast is **never transcribed or processed twice**.
 
 ---
 
-## Review Process
+## 👀 Human Review Process
 
-All generated content is sent for **human review** before any public publication. The workflow does not automatically publish content to social media or WordPress.
-
----
-
-## License
-
-This project is provided for educational and portfolio purposes. Feel free to adapt it for your own automation workflows.
+All AI-generated content is sent for **human review** before any public publication. The workflow does **not** automatically publish content to social media or WordPress, ensuring a final quality-control checkpoint.
 
 ---
 
-## Author
+## 📜 License
+
+This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for more details.
+
+---
+
+## 👨‍💻 Author
 
 **Md. Monirul Islam**
 
 AI Automation Engineer | Python Developer | n8n Workflow Specialist
+
+🔗 **LinkedIn:** https://linkedin.com/in/moonirul
+💻 **GitHub:** https://github.com/moonirul
+
+---
+
+⭐ If you found this project useful, consider giving it a **star** on GitHub!
