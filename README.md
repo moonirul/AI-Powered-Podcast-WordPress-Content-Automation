@@ -4,11 +4,11 @@ An **end-to-end AI automation system** built with **n8n**, **FastAPI**, **OpenAI
 
 ---
 <p align="center">
-  <img src="assets/images/Video to Audio to Transcript.png.png" alt="Podcast Workflow" width="800"/>
+  <img src="assets/images/Video to Audio to Transcript.png" alt="Podcast Workflow" width="800"/>
 </p>
 
 <p align="center">
-  <img src="assets/images/Video to Audio to Transcript_Output.png.png.png" alt="Podcast Workflow Output" width="800"/>
+  <img src="assets/images/Video to Audio to Transcript_Output.png" alt="Podcast Workflow Output" width="800"/>
 </p>
 
 <p align="center">
