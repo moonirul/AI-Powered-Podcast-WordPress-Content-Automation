@@ -3,17 +3,36 @@
 An **end-to-end AI automation system** built with **n8n**, **FastAPI**, **OpenAI Whisper**, and **OpenAI GPT** to automate podcast transcription and WordPress content repurposing. This project streamlines content creation by generating platform-specific marketing assets and storing them in Google Sheets and Google Drive for **human review before publication**.
 
 ---
+
+## 🎥 Demo Video
+
+A complete workflow walkthrough video is included in this repository:
+
+📹 **Workflow Demo:** `assets/Videos/Workflow-Video.mp4`
+
+---
+
+## 📸 Project Proof
+
+### 🎙️ Podcast Workflow
+
 <p align="center">
   <img src="assets/images/Video to Audio to Transcript.png" alt="Podcast Workflow" width="800"/>
 </p>
+
+### 📊 Podcast Workflow Output
 
 <p align="center">
   <img src="assets/images/Video to Audio to Transcript_Output.png" alt="Podcast Workflow Output" width="800"/>
 </p>
 
+### 📧 Human Review Email
+
 <p align="center">
-  <img src="assets/images/Review The Senior Living Experience (Podcast).png" alt="Review The Senior Living Experience (Podcast)" width="800"/>
+  <img src="assets/images/Review The Senior Living Experience (Podcast).png" alt="Review Email" width="800"/>
 </p>
+
+### 🌐 WordPress Blog Automation
 
 <p align="center">
   <img src="assets/images/SLE Blog to Social Content Agent.png" alt="WordPress Workflow" width="800"/>
@@ -60,6 +79,19 @@ An **end-to-end AI automation system** built with **n8n**, **FastAPI**, **OpenAI
 
 ---
 
+## 💼 Business Impact
+
+This automation system was designed to reduce the manual workload involved in podcast and blog content marketing. By combining AI transcription, content generation, and workflow automation, the project enables businesses to:
+
+* ⏱️ Save significant time on repetitive content creation tasks
+* 🔄 Repurpose long-form content into multiple marketing assets automatically
+* 🎯 Maintain consistent brand voice across platforms
+* 📂 Organize generated content in Google Sheets and Google Drive
+* 👀 Ensure human review before public publication
+* 🔒 Prevent duplicate processing of podcast files through built-in safeguards
+
+---
+
 ## 🛠️ Tech Stack
 
 | Category             | Technology                                              |
@@ -78,7 +110,10 @@ An **end-to-end AI automation system** built with **n8n**, **FastAPI**, **OpenAI
 
 ```bash
 AI-Powered-Podcast-WordPress-Content-Automation/
-├── .venv/
+├── assets/
+│   ├── images/
+│   └── Videos/
+│       └── Workflow-Video.mp4
 ├── n8n-workflows/
 │   ├── SLE Blog to Social Content Agent.json
 │   └── Video to Audio to Transcript.json
@@ -88,6 +123,21 @@ AI-Powered-Podcast-WordPress-Content-Automation/
 ├── uv.lock
 ├── README.md
 └── .gitignore
+```
+
+---
+
+## 🏗️ System Architecture
+
+```mermaid
+graph TD
+    A[Google Drive / WordPress] --> B[n8n Workflow]
+    B --> C[FastAPI Whisper Server]
+    C --> D[OpenAI GPT]
+    D --> E[Google Sheets]
+    D --> F[Google Drive]
+    E --> G[Email Review]
+    F --> G
 ```
 
 ---
@@ -117,8 +167,6 @@ This project uses **uv** for dependency management. Install all dependencies wit
 ```bash
 uv sync
 ```
-
-This command will automatically create the virtual environment and install all dependencies defined in `pyproject.toml`.
 
 ### ▶️ Run the FastAPI Whisper Server
 
@@ -224,6 +272,25 @@ During future scheduled runs, any file starting with `done_` is skipped, ensurin
 ## 👀 Human Review Process
 
 All AI-generated content is sent for **human review** before any public publication. The workflow does **not** automatically publish content to social media or WordPress, ensuring a final quality-control checkpoint.
+
+---
+
+## 🔒 Security Considerations
+
+* API keys are stored securely in environment variables.
+* Google Cloud credentials are excluded from version control using `.gitignore`.
+* No sensitive credentials are hardcoded in the repository.
+* Human review is required before any public publication.
+
+---
+
+## 🚀 Future Improvements
+
+* Add retry logic for failed workflow executions
+* Implement workflow monitoring and logging
+* Add automatic social media publishing after approval
+* Support multiple brand voice profiles
+* Add analytics tracking for generated content performance
 
 ---
 
