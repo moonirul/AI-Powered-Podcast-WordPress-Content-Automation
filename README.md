@@ -8,17 +8,9 @@ An **end-to-end AI automation system** built with **n8n**, **FastAPI**, **OpenAI
 
 A complete workflow walkthrough video is included in this repository:
 
-📹 **Workflow Demo:** [Watch Workflow Video](assets/Videos/Workflow-Video.mp4)
-
+📹 **Workflow Demo:** [Watch Workflow Video](https://drive.google.com/file/d/1rcxScZFhjQnIp2_pqit0zFnLobDS3Kqe/view?usp=sharing)
 
 ---
-
-## 🎥 Demo Video
-
-<video controls width="800">
-  <source src="assets/Videos/Workflow-Video.mp4" type="video/mp4">
-</video>
-
 
 ## 📸 Project Proof
 
