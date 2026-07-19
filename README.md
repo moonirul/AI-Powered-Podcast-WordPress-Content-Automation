@@ -12,6 +12,10 @@ An **end-to-end AI automation system** built with **n8n**, **FastAPI**, **OpenAI
 </p>
 
 <p align="center">
+  <img src="assets/images/Review The Senior Living Experience (Podcast).png" alt="Review The Senior Living Experience (Podcast)" width="800"/>
+</p>
+
+<p align="center">
   <img src="assets/images/SLE Blog to Social Content Agent.png" alt="WordPress Workflow" width="800"/>
 </p>
 
