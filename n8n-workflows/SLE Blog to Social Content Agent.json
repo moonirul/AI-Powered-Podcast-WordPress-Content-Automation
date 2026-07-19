@@ -1,0 +1,373 @@
+{
+  "name": "My workflow 3",
+  "nodes": [
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "",
+          "cachedResultUrl": ""
+        }
+      },
+      "id": "ea14e7be-eb0d-4be8-9aa8-427aa24d06e8",
+      "name": "Get Processed IDs",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        528,
+        0
+      ],
+      "executeOnce": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "X8b6lJU1IqRHs20D",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://blog.theseniorlivingexperience.com/wp-json/wp/v2/posts",
+        "options": {}
+      },
+      "id": "689509a5-c44b-4203-a553-9aaa5c76a928",
+      "name": "Get WordPress Posts",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        256,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// All WordPress posts come in from the HTTP Request node (first input)\n// All already-processed rows come in from the Google Sheets read node (second input)\nconst posts = $items('Get WordPress Posts');\nconst processedRows = $items('Get Processed IDs');\n\nconst processedIds = processedRows\n  .map(row => row.json.wp_post_id)\n  .filter(id => id !== undefined && id !== null && id !== '')\n  .map(id => String(id));\n\nreturn posts.filter(item => !processedIds.includes(String(item.json.id)));"
+      },
+      "id": "38b68f70-c8d6-408c-9efc-f140793caa24",
+      "name": "Filter New Posts",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "478165ba-5a34-476b-9057-502ace70688a",
+              "leftValue": "={{ $input.all().length > 0 }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "6cc0ee03-9fcd-4b75-8ff4-189643c09f8b",
+      "name": "New Post Exists",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        944,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.title.rendered }}\n\n{{ $json.content.rendered }}\n",
+        "options": {
+          "systemMessage": "=You are an expert content strategist and copywriter for \"The Senior Living Experience (SLE)\" — a trusted media and educational platform helping California families navigate aging-parent care decisions, with a focus on six-bed RCFE residential care homes. SLE is a media brand first, placement resource second. Trust is earned before anything is offered.\n\nYour job is to transform a published WordPress blog article into a complete social media content package while strictly maintaining the SLE brand voice.\n\n## Brand Voice\n- Calm, warm, emotionally intelligent, trustworthy\n- Sophisticated but approachable — never clinical, never salesy, never urgent\n- Start with her experience, not the brand\n- Name the hard thing before offering any solution\n- Short sentences when emotional weight is high\n- Never invent facts not present in the source article\n- Never exaggerate claims or use clickbait\n\n**Phrases to use naturally where relevant:**\n- \"You don't have to have it all figured out.\"\n- \"You are not failing her.\"\n- \"You don't have to do this alone.\"\n- \"This is information you deserve to have.\"\n\n**Never say:**\n- \"Schedule your free consultation\"\n- \"Don't wait — act now\" (or any urgency/scarcity language)\n- \"Loved ones\" (say mother, father, parent instead)\n- \"Seamless\" or \"journey\"\n\n**Sign-off style (for email):** \"With warmth, The Senior Living Experience\"\n\n## Target Audience (primary)\nWomen age 50–55 in California — the \"sandwich generation,\" managing aging parents and adult children simultaneously. Often business owners or executives. Overwhelmed by caregiving decisions. Values trust, safety, dignity, warmth, authentic human connection. She is 52. She runs a team. She didn't sleep last night.\nSecondary: adult children caregivers broadly, healthcare/discharge-planning professionals, families researching six-bed residential care.\n\n## Input\nYou will receive:\n- Blog Title\n- Blog Content\n- Blog URL (optional)\n\nCarefully read the entire article before generating content. Do not add claims, statistics, or stories beyond what's in the article.\n\n## Generate\n\n### 1. Facebook Caption\n- 100–200 words, conversational, encourages discussion in comments, ends with a soft CTA, no hashtags, no urgency language.\n\n### 2. Instagram Caption\n- Short paragraphs, easy to read, friendly and warm tone, 8–12 relevant hashtags (mix of senior-care and California-local tags), ends with a soft CTA.\n\n### 3. TikTok Talking-Head Prompt\n- 30–60 second script for Julie to speak on camera in her own voice — first-person, warm, like talking to a friend, not reading an ad. Strong hook in first 3 seconds, one key takeaway, soft CTA close. No corporate phrasing.\n\n### 4. Email Newsletter Blurb\n- 120–200 words, summarizes the article, explains why it matters to a stressed daughter reading at midnight, encourages clicking through to read the full article. Sign off is NOT required here (handled separately in GHL sequence) — end with the CTA line instead.\n\n### 5. Three Short Video Hooks\n- Three one-sentence hooks for Reels/TikTok/YouTube Shorts, each opening with an emotional or curiosity-driven line appropriate for a caregiving daughter, not a marketer.\n\n### 6. Three Quote Graphic Ideas\n- Three memorable quotes extracted or lightly adapted from the article itself, suitable for branded graphics in SLE's visual style (Cormorant Garamond headline font, sage/cream/blush palette). Keep each under 20 words.\n\n### 7. One Soft Call-to-Action\n- One CTA encouraging readers to read the full article or learn more — helpful, never sales-y, no urgency.\n\n## Output Rules\nReturn ONLY valid JSON. Do not use markdown. Do not include explanations.\nUse this exact schema:\n\n{\n  \"facebook_caption\": \"\",\n  \"instagram_caption\": \"\",\n  \"tiktok_talking_head_prompt\": \"\",\n  \"email_newsletter_blurb\": \"\",\n  \"short_video_hooks\": [\"\", \"\", \"\"],\n  \"quote_graphic_ideas\": [\"\", \"\", \"\"],\n  \"soft_call_to_action\": \"\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        16,
+        208
+      ],
+      "id": "bcfc4898-6e6d-4848-b870-c73dd764b3d2",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "",
+          "cachedResultName": "",
+          "cachedResultUrl": ""
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        384
+      ],
+      "id": "6eb2734d-e94a-439f-b364-48dcfaad9450",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "vBPtbnDPoQYMK9ZO",
+          "name": "OpenAI account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse the AI agent's JSON output AND re-attach the original WordPress post id\n// (the id would otherwise be lost, since the AI Agent node only outputs generated text)\nreturn items.map((item, i) => {\n  const raw = item.json.output\n    .replace(/```json|```/g, '')\n    .trim();\n\n  const data = JSON.parse(raw);\n\n  const originalPost = $('Filter New Posts').all()[i];\n  data.wp_post_id = originalPost ? originalPost.json.id : null;\n\n  return { json: data };\n});"
+      },
+      "id": "f204e8cd-31f9-49db-8e65-34dbd609be56",
+      "name": "Parse AI JSON",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        304,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "",
+          "cachedResultUrl": ""
+        }
+      },
+      "id": "1628472b-7f2a-44fd-a407-206479e43dbe",
+      "name": "Save To Google Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        544,
+        208
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "X8b6lJU1IqRHs20D",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const itemsData = $items(\"Parse AI JSON\");\n\nconst toHtml = (text) => {\n  if (!text) return \"\";\n\n  if (Array.isArray(text)) {\n    return `\n      <ul>\n        ${text.map(item => `<li>${item}</li>`).join(\"\")}\n      </ul>\n    `;\n  }\n\n  return `<p>${String(text).replace(/\\n/g, \"<br>\")}</p>`;\n};\n\n\nlet contentSections = \"\";\n\nfor (const item of itemsData) {\n\n  const data = item.json;\n\n  contentSections += `\n\n<h2 style=\"color:#315c4a;font-size:20px;border-bottom:1px solid #ddd;padding-bottom:8px;\">\nFacebook Caption\n</h2>\n\n<div style=\"font-size:15px;line-height:1.7;\">\n${toHtml(data.facebook_caption)}\n</div>\n\n\n<h2 style=\"color:#315c4a;font-size:20px;border-bottom:1px solid #ddd;padding-bottom:8px;\">\nInstagram Caption\n</h2>\n\n<div style=\"font-size:15px;line-height:1.7;\">\n${toHtml(data.instagram_caption)}\n</div>\n\n\n<h2 style=\"color:#315c4a;font-size:20px;border-bottom:1px solid #ddd;padding-bottom:8px;\">\nTikTok Talking Head Prompt\n</h2>\n\n<div style=\"background:#fafafa;padding:15px;border-radius:8px;\">\n${toHtml(data.tiktok_talking_head_prompt)}\n</div>\n\n\n<h2 style=\"color:#315c4a;font-size:20px;border-bottom:1px solid #ddd;padding-bottom:8px;\">\nEmail Newsletter Blurb\n</h2>\n\n<div>\n${toHtml(data.email_newsletter_blurb)}\n</div>\n\n\n<h2 style=\"color:#315c4a;font-size:20px;border-bottom:1px solid #ddd;padding-bottom:8px;\">\nShort Video Hooks\n</h2>\n\n${toHtml(data.short_video_hooks)}\n\n\n<h2 style=\"color:#315c4a;font-size:20px;border-bottom:1px solid #ddd;padding-bottom:8px;\">\nQuote Graphic Ideas\n</h2>\n\n${toHtml(data.quote_graphic_ideas)}\n\n\n<h2 style=\"color:#315c4a;font-size:20px;border-bottom:1px solid #ddd;padding-bottom:8px;\">\nSoft Call To Action\n</h2>\n\n<div style=\"background:#315c4a;color:white;padding:18px;border-radius:8px;\">\n${toHtml(data.soft_call_to_action)}\n</div>\n\n<hr style=\"margin:30px 0;\">\n\n`;\n}\n\n\nconst html = `\n<html>\n<body style=\"margin:0;padding:0;background:#f5f7f6;font-family:Arial;color:#333;\">\n\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n<tr>\n<td align=\"center\">\n\n<table width=\"650\" style=\"background:#fff;padding:30px;border-radius:12px;\">\n\n<tr>\n<td>\n\n<h1 style=\"color:#315c4a;text-align:center;\">\nThe Senior Living Experience\n</h1>\n\n<p style=\"text-align:center;\">\nBlog Content Package - Review Draft\n</p>\n\n<hr>\n\n${contentSections}\n\n<p style=\"background:#f1f6f3;padding:15px;\">\nGenerated for review only. Nothing has been published automatically.\n</p>\n\n\n</td>\n</tr>\n\n</table>\n\n</td>\n</tr>\n</table>\n\n</body>\n</html>\n`;\n\n\nreturn itemsData.map(item => {\n\nconst data = item.json;\n\nreturn {\n  json: {\n    email_html: `\n<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"UTF-8\">\n\n<style>\n\nbody {\n  margin:0;\n  padding:0;\n  background:#f5f7f6;\n  font-family:Arial, Helvetica, sans-serif;\n  color:#333;\n}\n\n.container {\n  width:650px;\n  margin:30px auto;\n  background:#ffffff;\n  border-radius:14px;\n  overflow:hidden;\n  box-shadow:0 4px 15px rgba(0,0,0,0.08);\n}\n\n.header {\n  background:#315c4a;\n  color:white;\n  padding:35px;\n  text-align:center;\n}\n\n.header h1 {\n  margin:0;\n  font-size:28px;\n}\n\n.header p {\n  margin-top:10px;\n  font-size:14px;\n}\n\n\n.content {\n  padding:35px;\n}\n\n\n.section {\n  margin-bottom:30px;\n}\n\n\n.section h2 {\n  color:#315c4a;\n  font-size:20px;\n  border-bottom:2px solid #e5e5e5;\n  padding-bottom:8px;\n  margin-bottom:15px;\n}\n\n\n.text {\n  font-size:15px;\n  line-height:1.8;\n  color:#444;\n}\n\n\n.box {\n  background:#f8faf9;\n  padding:18px;\n  border-left:5px solid #315c4a;\n  border-radius:8px;\n}\n\n\n.cta {\n  background:#315c4a;\n  color:white;\n  padding:20px;\n  border-radius:10px;\n  font-size:16px;\n  line-height:1.6;\n}\n\n\nul {\n  padding-left:20px;\n}\n\n\nli {\n  margin-bottom:10px;\n  line-height:1.6;\n}\n\n\n.footer {\n  background:#f1f6f3;\n  text-align:center;\n  padding:20px;\n  font-size:12px;\n  color:#666;\n}\n\n\n.divider {\n  border:none;\n  border-top:1px solid #eee;\n  margin:35px 0;\n}\n\n</style>\n\n</head>\n\n\n<body>\n\n<div class=\"container\">\n\n\n<div class=\"header\">\n\n<h1>\nThe Senior Living Experience\n</h1>\n\n<p>\nBlog Content Package - Review Draft\n</p>\n\n</div>\n\n\n<div class=\"content\">\n\n\n<div class=\"box\">\n<strong>Review Draft</strong><br>\nThis content package was generated by AI.\nNothing has been published automatically.\n</div>\n\n\n\n<div class=\"section\">\n\n<h2>\nFacebook Caption\n</h2>\n\n<div class=\"text\">\n${toHtml(data.facebook_caption)}\n</div>\n\n</div>\n\n\n\n<div class=\"section\">\n\n<h2>\nInstagram Caption\n</h2>\n\n<div class=\"text\">\n${toHtml(data.instagram_caption)}\n</div>\n\n</div>\n\n\n\n<div class=\"section\">\n\n<h2>\nTikTok Talking Head Prompt\n</h2>\n\n<div class=\"box\">\n${toHtml(data.tiktok_talking_head_prompt)}\n</div>\n\n</div>\n\n\n\n\n<div class=\"section\">\n\n<h2>\nEmail Newsletter Blurb\n</h2>\n\n<div class=\"text\">\n${toHtml(data.email_newsletter_blurb)}\n</div>\n\n</div>\n\n\n\n\n<div class=\"section\">\n\n<h2>\nShort Video Hooks\n</h2>\n\n<div class=\"text\">\n${toHtml(data.short_video_hooks)}\n</div>\n\n</div>\n\n\n\n\n<div class=\"section\">\n\n<h2>\nQuote Graphic Ideas\n</h2>\n\n<div class=\"text\">\n${toHtml(data.quote_graphic_ideas)}\n</div>\n\n</div>\n\n\n\n<div class=\"section\">\n\n<h2>\nSoft Call To Action\n</h2>\n\n<div class=\"cta\">\n${toHtml(data.soft_call_to_action)}\n</div>\n\n</div>\n\n\n\n</div>\n\n\n\n<div class=\"footer\">\n\nPrepared by AI Content Assistant<br>\nThe Senior Living Experience\n\n</div>\n\n\n</div>\n\n</body>\n</html>\n`\n  }\n};\n\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        736,
+        208
+      ],
+      "id": "8a7a503a-93ca-4b3d-a74f-b1ae98a70d0b",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "sendTo": "\"YOUR_MAIL_ADDRESS\"",
+        "subject": "Review The Senior Living Experience ( WordPress )",
+        "message": "={{ $json.email_html }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        960,
+        208
+      ],
+      "id": "f172833e-30be-42bd-ac37-3bdc39c83b90",
+      "name": "Send a message",
+      "webhookId": "04688c3c-cf98-45d4-8294-69f69c06eec0",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Fv9Mh8IspjwDiB1h",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 11,
+              "triggerAtMinute": 20
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "1890d8e0-3a60-42e8-8602-e5ec75608342",
+      "name": "Schedule Trigger"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Get Processed IDs": {
+      "main": [
+        [
+          {
+            "node": "Filter New Posts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get WordPress Posts": {
+      "main": [
+        [
+          {
+            "node": "Get Processed IDs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter New Posts": {
+      "main": [
+        [
+          {
+            "node": "New Post Exists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "New Post Exists": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Parse AI JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse AI JSON": {
+      "main": [
+        [
+          {
+            "node": "Save To Google Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save To Google Sheet": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get WordPress Posts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "35bafd7d-20f9-4c59-aa5b-e1bfcfef0023",
+  "meta": {
+    "instanceId": "b9d20ad043f91cb8f3534b83204ccf2c1aaf429933a622896df4f34a16fb55db"
+  },
+  "nodeGroups": [],
+  "id": "u8VNduxQzB1tlznY",
+  "tags": []
+}

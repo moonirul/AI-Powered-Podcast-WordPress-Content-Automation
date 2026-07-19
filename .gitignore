@@ -1,3 +1,22 @@
+# Python
+Backend/.venv/
+Backend/__pycache__/
+
+# Environment secrets
+.env
+.env.*
+
+# n8n private files
+n8n/*private*.json
+n8n/credentials.json
+
+# Credentials
+credentials.json
+token.json
+
+
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
