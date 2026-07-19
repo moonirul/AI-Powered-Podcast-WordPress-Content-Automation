@@ -3,6 +3,19 @@
 An **end-to-end AI automation system** built with **n8n**, **FastAPI**, **OpenAI Whisper**, and **OpenAI GPT** to automate podcast transcription and WordPress content repurposing. This project streamlines content creation by generating platform-specific marketing assets and storing them in Google Sheets and Google Drive for **human review before publication**.
 
 ---
+<p align="center">
+  <img src="assets/images/Video to Audio to Transcript.png.png" alt="Podcast Workflow" width="800"/>
+</p>
+
+<p align="center">
+  <img src="assets/images/Video to Audio to Transcript_Output.png.png.png" alt="Podcast Workflow Output" width="800"/>
+</p>
+
+<p align="center">
+  <img src="assets/images/SLE Blog to Social Content Agent.png" alt="WordPress Workflow" width="800"/>
+</p>
+
+---
 
 ## ✨ Key Features
 
