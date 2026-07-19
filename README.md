@@ -13,6 +13,13 @@ A complete workflow walkthrough video is included in this repository:
 
 ---
 
+## 🎥 Demo Video
+
+<video controls width="800">
+  <source src="assets/Videos/Workflow-Video.mp4" type="video/mp4">
+</video>
+
+
 ## 📸 Project Proof
 
 ### 🎙️ Podcast Workflow
